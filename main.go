@@ -11,7 +11,7 @@ func init() {
 	if len(os.Args) > 1 {
 		filePath = os.Args[1]
 	} else {
-		os.Exit(0)
+		log.Fatal("Error: No such file or directory")
 	}
 }
 
