@@ -23,7 +23,7 @@ func main() {
 	} else if folderExists(filePath) {
 		os.RemoveAll(filePath)
 	} else {
-		log.Fatal("Error: No such file or directory")
+		log.Fatalf("Error: %s No such file or directory.\n", filePath)
 	}
 }
 
