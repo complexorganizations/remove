@@ -7,6 +7,7 @@ import (
 
 var filePath string
 
+// Check for arguments
 func init() {
 	if len(os.Args) > 1 {
 		filePath = os.Args[1]
@@ -15,6 +16,7 @@ func init() {
 	}
 }
 
+// Decide what type of file it is.
 func main() {
 	if fileExists(filePath) {
 		os.Remove(filePath)
