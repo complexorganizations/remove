@@ -1,11 +1,12 @@
 package main
 
 import (
-	"os"
 	"log"
+	"os"
 )
 
 var filePath string
+var err error
 
 // Check for arguments
 func init() {
@@ -19,9 +20,15 @@ func init() {
 // Decide what type of file it is.
 func main() {
 	if fileExists(filePath) {
-		os.Remove(filePath)
+		err = os.Remove(filePath)
+		if err != nil {
+			log.Println(err)
+		}
 	} else if folderExists(filePath) {
-		os.RemoveAll(filePath)
+		err = os.RemoveAll(filePath)
+		if err != nil {
+			log.Println(err)
+		}
 	} else {
 		log.Fatalf("Error: %s No such file or directory.\n", filePath)
 	}
