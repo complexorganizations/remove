@@ -29,8 +29,6 @@ func main() {
 		if err != nil {
 			log.Println(err)
 		}
-	} else {
-		log.Fatalf("Error: %s No such file or directory.\n", filePath)
 	}
 }
 
