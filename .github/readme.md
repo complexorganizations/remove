@@ -1,5 +1,7 @@
 ### remove
 
+Better than `rm` && `del`
+
 ---
 ### Installation
 Lets download the latest `remove` binary
