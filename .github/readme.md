@@ -1,6 +1,6 @@
 ### remove
 
-Better than `rm` && `del`
+Better than `rm` & `del`
 
 ---
 ### Installation
