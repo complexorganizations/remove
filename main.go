@@ -5,8 +5,10 @@ import (
 	"os"
 )
 
-var filePath string
-var err error
+var (
+	filePath string
+	err      error
+)
 
 // Check for arguments
 func init() {
