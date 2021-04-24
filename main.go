@@ -15,7 +15,7 @@ func init() {
 	if len(os.Args) > 1 {
 		filePath = os.Args[1]
 	} else {
-		os.Exit(0)
+		log.Fatal("Error: no arguments passed.")
 	}
 }
 
@@ -24,12 +24,12 @@ func main() {
 	if fileExists(filePath) {
 		err = os.Remove(filePath)
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err)
 		}
 	} else if folderExists(filePath) {
 		err = os.RemoveAll(filePath)
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err)
 		}
 	}
 }
