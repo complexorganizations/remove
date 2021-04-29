@@ -14,6 +14,8 @@ func init() {
 		tempSystemPath := flag.String("path", "example", "Path in system")
 		flag.Parse()
 		systemPath = *tempSystemPath
+	} else {
+		log.Fatal("Error: The system path has not been given.")
 	}
 	// System path
 	if systemPath == "" {
