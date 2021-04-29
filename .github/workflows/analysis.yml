@@ -15,8 +15,8 @@ jobs:
       - name: Get dependencies
         run: go get -v
       - name: Run Test
-        run: go run . -path=go.mod
+        run: go run . -path=./.github/security.md
       - name: Build Test
         run: go build -v .
       - name: Run the build
-        run: ./remove -path=./.github
+        run: ./remove -path=./.github/status.md
