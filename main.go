@@ -1,8 +1,8 @@
 package main
 
 import (
-	"os"
 	"log"
+	"os"
 )
 
 var err error
@@ -14,7 +14,6 @@ func init() {
 func main() {
 	//
 }
-
 
 // Log errors
 func handleErrors(err error) {
