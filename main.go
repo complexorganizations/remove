@@ -6,8 +6,10 @@ import (
 	"os"
 )
 
-var systemPath string
-var err error
+var (
+	systemPath string
+	err        error
+)
 
 func init() {
 	if len(os.Args) > 1 {
