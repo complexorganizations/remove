@@ -1,18 +1,43 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 )
 
+var systemPath string
 var err error
 
 func init() {
-	//
+	if len(os.Args) > 1 {
+		tempSystemPath := flag.String("path", "example", "Path in system")
+		flag.Parse()
+		systemPath = *tempSystemPath
+	}
+	// System path
+	if systemPath == "" {
+		log.Fatal("Error: The system path has not been given.")
+	}
 }
 
 func main() {
-	//
+	if fileExists(systemPath) {
+		deleteFile()
+	}
+	if folderExists(systemPath) {
+		deleteFolder()
+	}
+}
+
+func deleteFile() {
+	err = os.Remove(systemPath)
+	handleErrors(err)
+}
+
+func deleteFolder() {
+	err = os.RemoveAll(systemPath)
+	handleErrors(err)
 }
 
 // Log errors
