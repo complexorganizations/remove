@@ -3,17 +3,18 @@ package main
 import (
 	"log"
 	"os"
+	"path/filepath"
 )
 
 var (
-	filePath string
-	err      error
+	systemPath string
+	err        error
 )
 
 // Check for arguments
 func init() {
 	if len(os.Args) > 1 {
-		filePath = os.Args[1]
+		systemPath = os.Args[1]
 	} else {
 		log.Fatal("Error: no arguments passed.")
 	}
@@ -21,15 +22,30 @@ func init() {
 
 // Decide what type of file it is.
 func main() {
-	if fileExists(filePath) {
-		err = os.Remove(filePath)
-		if err != nil {
-			log.Fatal(err)
-		}
-	} else if folderExists(filePath) {
-		err = os.RemoveAll(filePath)
-		if err != nil {
-			log.Fatal(err)
+	decideType()
+}
+
+func decideType() {
+	// Simply delete the file if it is a file.
+	if fileExists(systemPath) {
+		err = os.Remove(systemPath)
+		handlePrintlnErrors(err)
+	}
+	// If it's a folder, go through all of the files and delete them, then go through the folder and delete it.
+	if folderExists(systemPath) {
+		err = filepath.Walk(systemPath, func(path string, info os.FileInfo, err error) error {
+			handlePrintlnErrors(err)
+			// Remove the file
+			if fileExists(path) {
+				err = os.Remove(path)
+				handlePrintlnErrors(err)
+			}
+			return nil
+		})
+		// Remove the directory from your system
+		if folderExists(systemPath) {
+			err = os.RemoveAll(systemPath)
+			handlePrintlnErrors(err)
 		}
 	}
 }
@@ -50,4 +66,11 @@ func fileExists(filename string) bool {
 		return false
 	}
 	return !info.IsDir()
+}
+
+// Error Handle
+func handlePrintlnErrors(err error) {
+	if err != nil {
+		log.Println(err)
+	}
 }
