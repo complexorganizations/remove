@@ -10,7 +10,7 @@ go get -v github.com/complexorganizations/remove
 ```
 Lets use `remove` to delete a file or folder
 ```
-remove /home/user/folder/file
+remove -path=/home/user/folder/file
 ```
 
 ---
