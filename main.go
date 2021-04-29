@@ -34,6 +34,7 @@ func decideType() {
 	// If it's a folder, go through all of the files and delete them, then go through the folder and delete it.
 	if folderExists(systemPath) {
 		err = filepath.Walk(systemPath, func(path string, info os.FileInfo, err error) error {
+			// Handle error for pathwalk return
 			handlePrintlnErrors(err)
 			// Remove the file
 			if fileExists(path) {
@@ -42,6 +43,8 @@ func decideType() {
 			}
 			return nil
 		})
+		// Handle error for the walk function
+		handlePrintlnErrors(err)
 		// Remove the directory from your system
 		if folderExists(systemPath) {
 			err = os.RemoveAll(systemPath)
