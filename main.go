@@ -13,14 +13,14 @@ var (
 
 func init() {
 	if len(os.Args) > 1 {
-		tempSystemPath := flag.String("path", "example", "The location of the file(s) to be deleted.")
+		tempSystemPath := flag.String("path", "/user/example/folder/file", "The location of the file(s) to be deleted.")
 		flag.Parse()
 		systemPath = *tempSystemPath
 	} else {
 		log.Fatal("Error: The system path has not been given.")
 	}
 	// System path
-	if systemPath == "" {
+	if codePath == "" || codePath == "/user/example/folder/file" {
 		log.Fatal("Error: The system path has not been given.")
 	}
 }
