@@ -13,7 +13,7 @@ var (
 
 func init() {
 	if len(os.Args) > 1 {
-		tempSystemPath := flag.String("path", "example", "Path in system")
+		tempSystemPath := flag.String("path", "example", "The location of the file(s) to be deleted.")
 		flag.Parse()
 		systemPath = *tempSystemPath
 	} else {
