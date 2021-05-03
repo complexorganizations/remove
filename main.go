@@ -12,6 +12,7 @@ var (
 )
 
 func init() {
+	// Check to see if any user claims have been transmitted.
 	if len(os.Args) > 1 {
 		tempSystemPath := flag.String("path", "/user/example/folder/file", "The location of the file(s) to be deleted.")
 		flag.Parse()
