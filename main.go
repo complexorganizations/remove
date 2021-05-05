@@ -21,7 +21,7 @@ func init() {
 		log.Fatal("Error: The system path has not been given.")
 	}
 	// System path
-	if systemPath == "" || systemPath == "/user/example/folder/file" {
+	if len(systemPath) < 1 || systemPath == "/user/example/folder/file" {
 		log.Fatal("Error: The system path has not been given.")
 	}
 }
