@@ -29,9 +29,10 @@ func init() {
 func main() {
 	if fileExists(systemPath) {
 		deleteFile()
-	}
-	if folderExists(systemPath) {
+	} else if folderExists(systemPath) {
 		deleteFolder()
+	} else {
+		log.Fatal("Error: The machine direction is invalid.")
 	}
 }
 
