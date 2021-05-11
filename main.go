@@ -49,7 +49,7 @@ func deleteFolder() {
 // Log errors
 func handleErrors(err error) {
 	if err != nil {
-		log.Print(err)
+		log.Println(err)
 	}
 }
 
