@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"os"
 )
@@ -13,12 +12,10 @@ var (
 
 func init() {
 	// Check to see if any user claims have been transmitted.
-	if len(os.Args) > 1 {
-		tempSystemPath := flag.String("path", "/user/example/folder/file", "The location of the file(s) to be deleted.")
-		flag.Parse()
-		systemPath = *tempSystemPath
-	} else {
+	if len(os.Args) < 1 {
 		log.Fatal("Error: The system path has not been given.")
+	} else {
+		systemPath = os.Args[1]
 	}
 	// System path
 	if len(systemPath) < 1 || systemPath == "/user/example/folder/file" {
