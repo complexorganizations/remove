@@ -28,28 +28,16 @@ func init() {
 
 func main() {
 	if fileExists(systemPath) {
-		deleteFile()
-	} else if folderExists(systemPath) {
-		deleteFolder()
-	} else {
-		log.Fatal("Error: The machine direction is invalid.")
+		err = os.Remove(systemPath)
+		if err != nil {
+			log.Println(err)
+		}
 	}
-}
-
-func deleteFile() {
-	err = os.Remove(systemPath)
-	handleErrors(err)
-}
-
-func deleteFolder() {
-	err = os.RemoveAll(systemPath)
-	handleErrors(err)
-}
-
-// Log errors
-func handleErrors(err error) {
-	if err != nil {
-		log.Println(err)
+	if folderExists(systemPath) {
+		err = os.RemoveAll(systemPath)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 }
 
