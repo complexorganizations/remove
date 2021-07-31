@@ -17,10 +17,6 @@ func init() {
 	} else {
 		systemPath = os.Args[1]
 	}
-	// System path
-	if len(systemPath) < 1 || systemPath == "/user/example/folder/file" {
-		log.Fatal("Error: The system path has not been given.")
-	}
 }
 
 func main() {
@@ -29,12 +25,13 @@ func main() {
 		if err != nil {
 			log.Println(err)
 		}
-	}
-	if folderExists(systemPath) {
+	} else if folderExists(systemPath) {
 		err = os.RemoveAll(systemPath)
 		if err != nil {
 			log.Println(err)
 		}
+	} else {
+		log.Fatal("Error: The document could not be found on your local system.")
 	}
 }
 
