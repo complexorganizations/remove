@@ -1,26 +1,40 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 )
 
 var (
 	systemPath string
+	secureWipe bool
 	err        error
 )
 
 func init() {
-	// Check to see if any user claims have been transmitted.
-	if len(os.Args) < 1 {
-		log.Fatal("Error: The system path has not been given.")
-	} else {
-		systemPath = os.Args[1]
-	}
+	secureWipeFlag := flag.Bool("secure", false, "You can secure wipe a file.")
+	flag.Parse()
+	secureWipe = *secureWipeFlag
+	systemPath = flag.Args()[0]
 }
 
 func main() {
 	if fileExists(systemPath) {
+		if secureWipe {
+			file, err := os.Open(systemPath)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fileSize := len(file.Name())
+			for loop := 0; loop < fileSize; loop++ {
+				file.WriteString("0")
+			}
+			err = file.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 		err = os.Remove(systemPath)
 		if err != nil {
 			log.Println(err)
