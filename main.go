@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"math/rand"
@@ -16,10 +17,11 @@ var (
 
 func init() {
 	// Check to see if any user claims have been transmitted.
-	if len(os.Args) < 1 {
-		log.Fatal("Error: There are no parameters, therefore please give the path of the document(s) you want to remove.")
+	if len(flag.Args()) > 0 {
+		flag.Parse()
+		systemPath = flag.Args()[0]
 	} else {
-		systemPath = os.Args[1]
+		log.Fatalln("Error: There are no parameters, therefore please give the path of the document(s) you want to remove.")
 	}
 }
 
@@ -27,15 +29,15 @@ func main() {
 	// Remove a file
 	if fileExists(systemPath) {
 		secureDelete(systemPath)
-	}
-	// Remove the folder
-	if folderExists(systemPath) {
+	} else if folderExists(systemPath) {
 		filepath.Walk(systemPath, func(path string, info os.FileInfo, err error) error {
 			if fileExists(path) {
 				secureDelete(path)
 			}
 			return err
 		})
+	} else {
+		log.Fatalln("Error: The path you have entered does not exist.")
 	}
 }
 
@@ -61,9 +63,16 @@ func secureDelete(filepath string) {
 		}
 	}
 	// Once we have completed the loop we will remove the file.
-	err = os.Remove(filepath)
-	if err != nil {
-		log.Fatalln(err)
+	if fileExists(filepath) {
+		err = os.Remove(filepath)
+		if err != nil {
+			log.Println(err)
+		}
+	} else if folderExists(filepath) {
+		err = os.RemoveAll(filepath)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 }
 
