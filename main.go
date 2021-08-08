@@ -17,7 +17,7 @@ var (
 func init() {
 	// Check to see if any user claims have been transmitted.
 	if len(os.Args) < 1 {
-		log.Fatal("Error: No flags provided. Please use -help for more information.")
+		log.Fatal("Error: There are no parameters, therefore please give the path of the document(s) you want to remove.")
 	} else {
 		systemPath = os.Args[1]
 	}
