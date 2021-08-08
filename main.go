@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/fs"
 	"log"
 	"math/rand"
 	"os"
@@ -31,7 +30,7 @@ func main() {
 	}
 	// Remove the folder
 	if folderExists(systemPath) {
-		filepath.Walk(systemPath, func(path string, info fs.FileInfo, err error) error {
+		filepath.Walk(systemPath, func(path string, info os.FileInfo, err error) error {
 			if fileExists(path) {
 				secureDelete(path)
 			}
@@ -45,12 +44,12 @@ func secureDelete(filepath string) {
 	// Loop it for multiple times so its harder to recover.
 	for loop := 0; loop < 3; loop++ {
 		// open the file
-		file, err := os.OpenFile(systemPath, os.O_RDWR|os.O_CREATE, 0600)
+		file, err := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE, 0600)
 		if err != nil {
 			log.Println(err)
 		}
 		// Write random data to the file, same as the original file size.
-		_, err = file.WriteString(randomString(fileSize(systemPath)))
+		_, err = file.WriteString(randomString(fileSize(filepath)))
 		// Report any error if while writing to the file.
 		if err != nil {
 			log.Println(err)
@@ -62,7 +61,7 @@ func secureDelete(filepath string) {
 		}
 	}
 	// Once we have completed the loop we will remove the file.
-	err = os.Remove(systemPath)
+	err = os.Remove(filepath)
 	if err != nil {
 		log.Fatalln(err)
 	}
