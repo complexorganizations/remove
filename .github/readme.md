@@ -14,6 +14,11 @@ remove /home/user/folder/file
 ```
 
 ---
+### F&Q
+How is it better than `rm -rf` or `del`?
+- We don't care about recovering the file or dealing with other forms of errors; we just want to get rid of the file.
+
+---
 ### Author
 * Name: Prajwal Koirala
 * Website: [prajwalkoirala.com](https://www.prajwalkoirala.com)
