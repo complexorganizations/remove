@@ -68,8 +68,8 @@ func secureDelete(filepath string) {
 		if err != nil {
 			log.Println(err)
 		}
-	} else if folderExists(filepath) {
-		err = os.RemoveAll(filepath)
+	} else if folderExists(systemPath) {
+		err = os.RemoveAll(systemPath)
 		if err != nil {
 			log.Println(err)
 		}
