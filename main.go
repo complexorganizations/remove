@@ -37,11 +37,12 @@ func main() {
 			}
 			// Rename the folder if found.
 			if folderExists(path) {
+				folderNameSize := len(path)
 				folderPath, err := filepath.Abs(path)
 				if err != nil {
 					log.Println(err)
 				}
-				err = os.Rename(folderPath, filepath.Join(filepath.Dir(folderPath), filepath.Base(randomString(64))))
+				err = os.Rename(folderPath, filepath.Join(filepath.Dir(folderPath), filepath.Base(randomString(folderNameSize))))
 				if err != nil {
 					log.Println(err)
 				}
