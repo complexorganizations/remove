@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"io/fs"
 	"log"
 	"math/rand"
 	"os"
-	"io/fs"
 	"path/filepath"
 	"time"
 )
@@ -17,7 +18,7 @@ var (
 func init() {
 	// Check to see if any user claims have been transmitted.
 	if len(os.Args) < 1 {
-		log.Fatal("Error: The system path has not been given.")
+		log.Fatal("Error: No flags provided. Please use -help for more information.")
 	} else {
 		systemPath = os.Args[1]
 	}
@@ -26,16 +27,30 @@ func init() {
 func main() {
 	// Remove a file
 	if fileExists(systemPath) {
-		secureDelete(systemPath)
+		// Replace the content of the file multiple times and than remove it.
+		for loop := 0; loop < 3; loop++ {
+			secureDelete(systemPath)
+		}
+		err = os.Remove(systemPath)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 	// Remove the folder
 	if folderExists(systemPath) {
-		err = filepath.Walk(systemPath, func(path string, info fs.FileInfo, err error) error {
-			secureDelete(path)
-			return nil
-		})
+		// Remove the content of the file multiple times and than delete it.
+		for loop := 0; loop < 3; loop++ {
+			err = filepath.Walk(systemPath, func(path string, info fs.FileInfo, err error) error {
+				secureDelete(path)
+				return nil
+			})
+			if err != nil {
+				log.Println(err)
+			}
+		}
+		err = os.RemoveAll(systemPath)
 		if err != nil {
-			log.Println(err)
+			log.Fatal(err)
 		}
 	}
 }
@@ -43,21 +58,20 @@ func main() {
 // Securely wipe documents
 func secureDelete(filepath string) {
 	// open the file
-	file, err := os.Open(systemPath)
+	file, err := os.OpenFile(systemPath, os.O_RDWR|os.O_CREATE, 0600)
 	if err != nil {
-		err = os.Remove(filepath)
-		if err != nil {
-			log.Print("Coudent open the file so tried to delete it but failed.")
-		}
-		log.Print(err)
+		log.Println(err)
 	}
 	// Write random data to the file, same as the original file size.
-	randomData := randomString(fileSize(systemPath))
-	file.WriteString(string(randomData))
+	_, err = file.WriteString(randomString(fileSize(systemPath)))
+	// Report any error if while writing to the file.
+	if err != nil {
+		log.Fatalln(err)
+	}
 	// close the file
 	err = file.Close()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 }
 
@@ -80,18 +94,19 @@ func folderExists(foldername string) bool {
 }
 
 // Generate a random string
-func randomString(bytesSize int64) []byte {
+func randomString(bytesSize int64) string {
 	rand.Seed(time.Now().UTC().UnixNano())
-	randomByte := make([]byte, bytesSize)
-	rand.Read(randomByte)
-	return randomByte
+	randomBytes := make([]byte, bytesSize)
+	rand.Read(randomBytes)
+	randomString := fmt.Sprintf("%X", randomBytes)
+	return randomString
 }
 
 // Get the size of a file
 func fileSize(filepath string) int64 {
 	file, err := os.Stat(filepath)
 	if err != nil {
-		log.Print(err)
+		log.Println(err)
 	}
 	return file.Size()
 }
