@@ -17,7 +17,7 @@ var (
 
 func init() {
 	// Check to see if any user claims have been transmitted.
-	if len(flag.Args()) > 0 {
+	if len(os.Args) > 1 {
 		flag.Parse()
 		systemPath = flag.Args()[0]
 	} else {
