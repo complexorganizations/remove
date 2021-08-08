@@ -41,7 +41,7 @@ func main() {
 				if err != nil {
 					log.Println(err)
 				}
-				err = os.Rename(folderPath, filepath.Join(filepath.Dir(folderPath), randomString(64)+filepath.Base(folderPath)))
+				err = os.Rename(folderPath, filepath.Join(filepath.Dir(folderPath), filepath.Base(randomString(64))))
 				if err != nil {
 					log.Println(err)
 				}
