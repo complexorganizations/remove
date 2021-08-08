@@ -33,7 +33,7 @@ func main() {
 		}
 		err = os.Remove(systemPath)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
 	}
 	// Remove the folder
@@ -50,7 +50,7 @@ func main() {
 		}
 		err = os.RemoveAll(systemPath)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 	}
 }
@@ -66,12 +66,12 @@ func secureDelete(filepath string) {
 	_, err = file.WriteString(randomString(fileSize(systemPath)))
 	// Report any error if while writing to the file.
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 	// close the file
 	err = file.Close()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 }
 
