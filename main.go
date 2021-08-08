@@ -27,51 +27,44 @@ func init() {
 func main() {
 	// Remove a file
 	if fileExists(systemPath) {
-		// Replace the content of the file multiple times and than remove it.
-		for loop := 0; loop < 3; loop++ {
-			secureDelete(systemPath)
-		}
-		err = os.Remove(systemPath)
-		if err != nil {
-			log.Fatalln(err)
-		}
+		secureDelete(systemPath)
 	}
 	// Remove the folder
 	if folderExists(systemPath) {
-		// Remove the content of the file multiple times and than delete it.
-		for loop := 0; loop < 3; loop++ {
-			err = filepath.Walk(systemPath, func(path string, info fs.FileInfo, err error) error {
+		filepath.Walk(systemPath, func(path string, info fs.FileInfo, err error) error {
+			if fileExists(path) {
 				secureDelete(path)
-				return nil
-			})
-			if err != nil {
-				log.Println(err)
 			}
-		}
-		err = os.RemoveAll(systemPath)
-		if err != nil {
-			log.Println(err)
-		}
+			return err
+		})
 	}
 }
 
 // Securely wipe documents
 func secureDelete(filepath string) {
-	// open the file
-	file, err := os.OpenFile(systemPath, os.O_RDWR|os.O_CREATE, 0600)
-	if err != nil {
-		log.Println(err)
+	// Loop it for multiple times so its harder to recover.
+	for loop := 0; loop < 3; loop++ {
+		// open the file
+		file, err := os.OpenFile(systemPath, os.O_RDWR|os.O_CREATE, 0600)
+		if err != nil {
+			log.Println(err)
+		}
+		// Write random data to the file, same as the original file size.
+		_, err = file.WriteString(randomString(fileSize(systemPath)))
+		// Report any error if while writing to the file.
+		if err != nil {
+			log.Println(err)
+		}
+		// close the file
+		err = file.Close()
+		if err != nil {
+			log.Println(err)
+		}
 	}
-	// Write random data to the file, same as the original file size.
-	_, err = file.WriteString(randomString(fileSize(systemPath)))
-	// Report any error if while writing to the file.
+	// Once we have completed the loop we will remove the file.
+	err = os.Remove(systemPath)
 	if err != nil {
-		log.Println(err)
-	}
-	// close the file
-	err = file.Close()
-	if err != nil {
-		log.Println(err)
+		log.Fatalln(err)
 	}
 }
 
