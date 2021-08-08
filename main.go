@@ -16,16 +16,16 @@ func init() {
 	if len(os.Args) > 1 {
 		flag.Parse()
 		systemPath = flag.Args()[0]
-	} else {
+	} else if len(systemPath) == 0 {
 		log.Fatalln("Error: There are no parameters, therefore please give the path of the document(s) you want to remove.")
 	}
 }
 
 func main() {
-	documentType(systemPath)
+	removeDocument(systemPath)
 }
 
-func documentType(filePathInSystem string) {
+func removeDocument(filePathInSystem string) {
 	if fileExists(filePathInSystem) {
 		err = os.Remove(filePathInSystem)
 		if err != nil {
