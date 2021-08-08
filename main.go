@@ -28,23 +28,14 @@ func init() {
 func main() {
 	// Remove a file
 	if fileExists(systemPath) {
+		secureRename(systemPath)
 		secureDelete(systemPath)
 	} else if folderExists(systemPath) {
 		filepath.Walk(systemPath, func(path string, info os.FileInfo, err error) error {
 			// Remove the files if any found.
 			if fileExists(path) {
+				secureRename(path)
 				secureDelete(path)
-			}
-			// Rename the folder if found.
-			if folderExists(path) {
-				folderPath, err := filepath.Abs(path)
-				if err != nil {
-					log.Println(err)
-				}
-				err = os.Rename(folderPath, filepath.Join(filepath.Dir(folderPath), filepath.Base(randomString(int64(len(path))))))
-				if err != nil {
-					log.Println(err)
-				}
 			}
 			return err
 		})
@@ -85,6 +76,17 @@ func secureDelete(filepath string) {
 		if err != nil {
 			log.Println(err)
 		}
+	}
+}
+
+func secureRename(pathInSystem string) {
+	folderPath, err := filepath.Abs(pathInSystem)
+	if err != nil {
+		log.Println(err)
+	}
+	err = os.Rename(folderPath, filepath.Join(filepath.Dir(folderPath), filepath.Base(randomString(int64(len(pathInSystem))))))
+	if err != nil {
+		log.Println(err)
 	}
 }
 
