@@ -31,8 +31,20 @@ func main() {
 		secureDelete(systemPath)
 	} else if folderExists(systemPath) {
 		filepath.Walk(systemPath, func(path string, info os.FileInfo, err error) error {
+			// Remove the files if any found.
 			if fileExists(path) {
 				secureDelete(path)
+			}
+			// Rename the folder if found.
+			if folderExists(path) {
+				folderPath, err := filepath.Abs(path)
+				if err != nil {
+					log.Println(err)
+				}
+				err = os.Rename(folderPath, filepath.Join(filepath.Dir(folderPath), randomString(64)+filepath.Base(folderPath)))
+				if err != nil {
+					log.Println(err)
+				}
 			}
 			return err
 		})
