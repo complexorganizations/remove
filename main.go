@@ -19,6 +19,13 @@ func init() {
 	} else if len(systemPath) == 0 {
 		log.Fatalln("Error: There are no parameters, therefore please give the path of the document(s) you want to remove.")
 	}
+	// If the user does not want the current route, it should be removed.
+	if systemPath == "." {
+		systemPath, err = os.Getwd()
+		if err != nil {
+			log.Println(err)
+		}
+	}
 }
 
 func main() {
