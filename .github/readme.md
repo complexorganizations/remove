@@ -6,7 +6,7 @@ Better than `rm` & `del`
 ### Installation
 Lets download the latest `remove` binary
 ```
-go get -v github.com/complexorganizations/remove
+go install github.com/complexorganizations/remove@latest
 ```
 Lets use `remove` to delete a file or folder
 ```
